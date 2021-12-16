@@ -3,6 +3,12 @@ import pymysql
 
 class Mysql_search():
     def __init__(self, ls_host, ls_user, ls_password, ls_db, ls_port=38965, ls_charset="utf8"):
+        self.ls_host = ls_host
+        self.ls_user = ls_user
+        self.ls_password = ls_password
+        self.ls_db = ls_db
+        self.ls_port = ls_port
+        self.ls_charset = ls_charset
 
         try:
             # self.conn = pymysql.connect(host="10.5.254.238",
@@ -23,6 +29,7 @@ class Mysql_search():
             print("error" % e)
 
     def get_one(self, sql):
+        self.sql = sql
         # sql = "select * from close_contact_source "
         self.cursor.execute(sql)
         # self.cursor.execute(sql, ('post',))
@@ -36,6 +43,7 @@ class Mysql_search():
         return result
 
     def get_all(self, sql):
+        self.sql = sql
         # sql = "select * from close_contact_source "
         self.cursor.execute(sql)
         # self.cursor.execute(sql, ('post',))
@@ -49,14 +57,13 @@ class Mysql_search():
     def db_close(self):
         self.conn.close()
 
-
-if __name__ == '__main__':
-    obj = Mysql_search()
-    # result = obj.get_one()
-    # print(result)
-    # print(result['url'])
-    reslt = obj.get_all()
-    for item in reslt:
-        print(item)
-        print("-" * 10)
-    obj.db_close()
+# if __name__ == '__main__':
+#     obj = Mysql_search()
+#     # result = obj.get_one()
+#     # print(result)
+#     # print(result['url'])
+#     reslt = obj.get_all()
+#     for item in reslt:
+#         print(item)
+#         print("-" * 10)
+#     obj.db_close()
