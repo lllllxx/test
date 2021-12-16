@@ -1,5 +1,5 @@
 import pandas as pd
-file = '1.CSV'
-data = pd.read_csv('nba.CSV')
+file = 'C:/Users/lixin-lc/Desktop/nba.CSV'
+data = pd.read_csv(file)
 # data = pd.read_csv( my_file.csv , sep= ; , encoding= latin-1 , nrows=1000, skiprows=[2,5])
 print(data.to_string())

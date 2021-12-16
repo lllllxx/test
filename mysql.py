@@ -3,14 +3,22 @@ import pymysql
 
 
 class Mysql_search():
-    def __init__(self):
+    def __init__(self,ls_host,ls_user,ls_password,ls_db,ls_port = 38965,ls_charset = "utf8"):
+
+
         try:
-            self.conn = pymysql.connect(host="10.5.254.238",
-                                        user="root",
-                                        password="Inspur2021@#",
-                                        db="bigscreen",
-                                        port=38965,
-                                        charset="utf8")
+            # self.conn = pymysql.connect(host="10.5.254.238",
+            #                             user="root",
+            #                             password="Inspur2021@#",
+            #                             db="bigscreen",
+            #                             port=38965,
+            #                             charset="utf8")
+            self.conn = pymysql.connect(host=ls_host,
+                                        user=ls_user,
+                                        password=ls_password,
+                                        db=ls_db,
+                                        port=ls_port,
+                                        charset=ls_charset)
 
             self.cursor = self.conn.cursor()
         except pymysql.err as e:
@@ -44,13 +52,13 @@ class Mysql_search():
         self.conn.close()
 
 
-# if __name__ == '__main__':
-#     obj = Mysql_search()
-#     # result = obj.get_one()
-#     # print(result)
-#     # print(result['url'])
-#     reslt = obj.get_all()
-#     for item in reslt:
-#         print(item)
-#         print("-" * 10)
-#     obj.db_close()
+if __name__ == '__main__':
+    obj = Mysql_search()
+    # result = obj.get_one()
+    # print(result)
+    # print(result['url'])
+    reslt = obj.get_all()
+    for item in reslt:
+        print(item)
+        print("-" * 10)
+    obj.db_close()
