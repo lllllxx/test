@@ -1,10 +1,8 @@
-
 import pymysql
 
 
 class Mysql_search():
-    def __init__(self,ls_host,ls_user,ls_password,ls_db,ls_port = 38965,ls_charset = "utf8"):
-
+    def __init__(self, ls_host, ls_user, ls_password, ls_db, ls_port=38965, ls_charset="utf8"):
 
         try:
             # self.conn = pymysql.connect(host="10.5.254.238",
@@ -24,7 +22,7 @@ class Mysql_search():
         except pymysql.err as e:
             print("error" % e)
 
-    def get_one(self,sql):
+    def get_one(self, sql):
         # sql = "select * from close_contact_source "
         self.cursor.execute(sql)
         # self.cursor.execute(sql, ('post',))
@@ -37,7 +35,7 @@ class Mysql_search():
         self.cursor.close()
         return result
 
-    def get_all(self,sql):
+    def get_all(self, sql):
         # sql = "select * from close_contact_source "
         self.cursor.execute(sql)
         # self.cursor.execute(sql, ('post',))

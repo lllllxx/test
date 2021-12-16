@@ -1,4 +1,5 @@
 import pandas as pd
+
 file = 'C:/Users/lixin-lc/Desktop/nba.CSV'
 data = pd.read_csv(file)
 # data = pd.read_csv( my_file.csv , sep= ; , encoding= latin-1 , nrows=1000, skiprows=[2,5])
