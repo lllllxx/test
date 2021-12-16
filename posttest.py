@@ -1,7 +1,8 @@
 import requests
 import json
-url = "http://10.5.254.242:50000/encrypt/api/v1/sm4/decrypt"
-date = \
+def jiemi():
+    url = "http://10.5.254.242:50000/encrypt/api/v1/sm4/decrypt"
+    date = \
     {
         "encryptId": "a4ababd053ed11ec8658745aaa412d5c",
         "data": [{
@@ -13,7 +14,28 @@ date = \
     }
 
 # date_json = json.dumps(date)
-print(date)
-response = requests.post(url = url ,json = date)
-print(response.text)
-# help(requests)
+    print(date)
+    response = requests.post(url = url ,json = date)
+    print(response.text)
+    # help(requests)
+
+def jiami():
+    url = "http://10.5.254.242:50000/encrypt/api/v1/sm4/encrypt"
+    date = \
+        {
+            "encryptId": "a4aba1f353ed11ec8658745aaa412d5c",
+            "data": [{
+                "name": "张彩凤",
+                "idcard": "15010519780408904X"
+            }, {
+                "phone": "13347111105"
+            }]
+        }
+
+    # date_json = json.dumps(date)
+    print(date)
+    response = requests.post(url=url, json=date)
+    print(response.text)
+
+jiami()
+jiemi()
