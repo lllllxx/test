@@ -40,6 +40,15 @@ def jiami():
     response = requests.post(url=url, json=date)
     print(response.text)
 
+def ceshi():
+    url = "http://127.0.0.1:7777/index1"
+    header={}
+    response = requests.post(url=url, headers=header)
+    print(response.text)
+
 
 jiami()
+print("-" * 50)
 jiemi()
+# print("-" * 50)
+# ceshi()
