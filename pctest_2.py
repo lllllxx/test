@@ -1,21 +1,24 @@
-import requests
+import json
+import pandas as pd
+from sqlalchemy import create_engine
 
-headers = {
-    'Connection': 'keep-alive',
-    'Accept': 'application/json, text/plain, */*',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
-    'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRzIjoiMGY5MWM3ZjM3M2U5NGYxMTgyMWRhMzk2ZDg5ZWRiN2UiLCJ1c2VyX25hbWUiOiLlhoXokpnlj6Toh6rmsrvljLoiLCJkZXB0SWQiOjE1MjkxMCwicm9sZXNTZXQiOiJbMTIxXSIsInVzZXJJZCI6MTc1LCJhdXRob3JpdGllcyI6WyJST0xFX0NPVklEX1BST1ZJTkNFIl0sImNsaWVudF9pZCI6IjBmOTFjN2YzNzNlOTRmMTE4MjFkYTM5NmQ4OWVkYjdlIiwic2NvcGUiOlsiYWxsIl0sImxvZ2luTmFtZSI6Im5tZ3p6cTEiLCJ0ZWwiOiIiLCJleHAiOjE2NDA2MDYzNjQsImp0aSI6ImRkZDBhZjlmLWJkYzctNDc3Zi1iNzQwLWY1NzRiNDFkNDE0MCIsIm1hbmFnZS5zZXJ2ZXIiOiJodHRwOi8vMTAuNS4yNTQuMjMyOjcwMDAvYWRtaW4ifQ.jFy0zJOr1Wif0Y3-maXBZjvJ5Sp9rFbBjJ1qWmB1Jzc',
-    'Referer': 'http://10.5.254.206:9000/screen/',
-    'Accept-Language': 'zh-CN,zh;q=0.9',
-}
+engine = create_engine("mysql+pymysql://root:Inspur2021%40%23@10.5.254.238:38965/mysql")
+sql = 'select * from lx_fx'
+file = r'D:\test.txt'
+f = open(file, "r")
+r = f.read()
+f.close()
 
-params = (
-    ('code', '15'),
-)
+data = json.loads(r)
+data_h = data['data']['highlist']
+data_m = data['data']['middlelist']
 
-response = requests.get('http://10.5.254.206:9000/bigscreen/api/v1/medical/resource/fixedhospital/groupByCounty', headers=headers, params=params, verify=False)
-
-#NB. Original query string below. It seems impossible to parse and
-#reproduce query strings 100% accurately so the one below is given
-#in case the reproduced version is not "correct".
-# response = requests.get('http://10.5.254.206:9000/bigscreen/api/v1/medical/resource/fixedhospital/groupByCounty?code=15', headers=headers, verify=False)
+# 展平数据
+df = pd.json_normalize(data_m, meta=['city', 'county', 'province'], record_path='communitys', record_prefix='jd')
+df_1 = pd.json_normalize(data_h, meta=['city', 'county', 'province'], record_path='communitys', record_prefix='jd')
+df = df.rename(columns={'jd0': 'jd'})
+df_1 = df_1.rename(columns={'jd0': 'jd'})
+df['fx'] = df.apply(lambda x: '中风险', axis=1)
+df_1['fx'] = df_1.apply(lambda x: '高风险', axis=1)
+df.to_sql('lx_fx', engine, if_exists="append", index=False)
+df_1.to_sql('lx_fx', engine, if_exists="append", index=False)
