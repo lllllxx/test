@@ -1,69 +1,63 @@
+# 获取连接方法
 import pymysql
 
 
-class Mysql_search():
-    def __init__(self, ls_host, ls_user, ls_password, ls_db, ls_port=38965, ls_charset="utf8"):
-        self.ls_host = ls_host
-        self.ls_user = ls_user
-        self.ls_password = ls_password
-        self.ls_db = ls_db
-        self.ls_port = ls_port
-        self.ls_charset = ls_charset
+# 获取连接方法
+def get_db_conn(self, ls_host, ls_user, ls_password, ls_db, ls_port=38965, ls_charset="utf8"):
+    self.ls_host = ls_host
+    self.ls_user = ls_user
+    self.ls_password = ls_password
+    self.ls_db = ls_db
+    self.ls_port = ls_port
+    self.ls_charset = ls_charset
+    conn = pymysql.connect(host=ls_host,
+                           user=ls_user,
+                           password=ls_password,
+                           db=ls_db,
+                           port=ls_port,
+                           charset=ls_charset)  # 如果查询有中文，需要指定测试集编码
 
-        try:
-            # self.conn = pymysql.connect(host="10.5.254.238",
-            #                             user="root",
-            #                             password="Inspur2021@#",
-            #                             db="bigscreen",
-            #                             port=38965,
-            #                             charset="utf8")
-            self.conn = pymysql.connect(host=ls_host,
-                                        user=ls_user,
-                                        password=ls_password,
-                                        db=ls_db,
-                                        port=ls_port,
-                                        charset=ls_charset)
+    return conn
 
-            self.cursor = self.conn.cursor()
-        except pymysql.err as e:
-            print("error" % e)
 
-    def get_one(self, sql):
-        self.sql = sql
-        # sql = "select * from close_contact_source "
-        self.cursor.execute(sql)
-        # self.cursor.execute(sql, ('post',))
-        # print(dir(self.cursor))
-        # print(self.cursor.description)
-        # 获取第一条查询结果，结果是元组
-        rest = self.cursor.fetchone()
-        # 处理查询结果，将元组转换为字典
-        result = dict(zip([k[0] for k in self.cursor.description], rest))
-        self.cursor.close()
-        return result
+# 封装数据库查询操作
+def query_db(sql):
+    conn = get_db_conn()  # 获取连接
+    cur = conn.cursor()  # 建立游标
+    cur.execute(sql)  # 执行sql
+    result = cur.fetchall()  # 获取所有查询结果
+    cur.close()  # 关闭游标
+    conn.close()  # 关闭连接
+    return result  # 返回结果
 
-    def get_all(self, sql):
-        self.sql = sql
-        # sql = "select * from close_contact_source "
-        self.cursor.execute(sql)
-        # self.cursor.execute(sql, ('post',))
-        # 获取第一条查询结果，结果是元组
-        rest = self.cursor.fetchall()
-        # 处理查询结果，将元组转换为字典
-        result = [dict(zip([k[0] for k in self.cursor.description], row)) for row in rest]
-        self.cursor.close()
-        return result
 
-    def db_close(self):
-        self.conn.close()
+# 封装更改数据库操作
+def change_db(sql):
+    conn = get_db_conn()  # 获取连接
+    cur = conn.cursor()  # 建立游标
+    try:
+        cur.execute(sql)  # 执行sql
+        conn.commit()  # 提交更改
+    except Exception as e:
+        conn.rollback()  # 回滚
+    finally:
+        cur.close()  # 关闭游标
+        conn.close()  # 关闭连接
 
-# if __name__ == '__main__':
-#     obj = Mysql_search()
-#     # result = obj.get_one()
-#     # print(result)
-#     # print(result['url'])
-#     reslt = obj.get_all()
-#     for item in reslt:
-#         print(item)
-#         print("-" * 10)
-#     obj.db_close()
+
+# 封装常用数据库操作
+def check_user(name):
+    # 注意sql中''号嵌套的问题
+    sql = "select * from user where name = '{}'".format(name)
+    result = query_db(sql)
+    return True if result else False
+
+
+def add_user(name, password):
+    sql = "insert into user (name, passwd) values ('{}','{}')".format(name, password)
+    change_db(sql)
+
+
+def del_user(name):
+    sql = "delete from user where name='{}'".format(name)
+    change_db(sql)

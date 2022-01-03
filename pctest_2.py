@@ -3,7 +3,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 engine = create_engine("mysql+pymysql://root:Inspur2021%40%23@10.5.254.238:38965/mysql")
-sql = 'select * from lx_fx'
+sql = 'delete from lx_fx'
 file = r'D:\test.txt'
 f = open(file, "r")
 r = f.read()
