@@ -1,15 +1,14 @@
 import json
 import pandas as pd
 from sqlalchemy import create_engine
+from pctest_1 import *
 
 engine = create_engine("mysql+pymysql://root:Inspur2021%40%23@10.5.254.238:38965/mysql")
 sql = 'delete from lx_fx'
-file = r'D:\test.txt'
-f = open(file, "r")
-r = f.read()
-f.close()
+cursor = engine.execute(sql)
 
-data = json.loads(r)
+data = json.loads(fx())
+
 data_h = data['data']['highlist']
 data_m = data['data']['middlelist']
 

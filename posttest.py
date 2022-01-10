@@ -26,7 +26,7 @@ def jiami():
     url = "http://10.5.254.242:50000/encrypt/api/v1/sm4/encrypt"
     date = \
         {
-            "encryptId": "a4aba1f353ed11ec8658745aaa412d5c",
+            "encryptId": "",
             "data": [{
                 "name": "张彩凤",
                 "idcard": "15010519780408904X"
