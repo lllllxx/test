@@ -17,7 +17,7 @@ count = dicts['count']
 
 for item in updatetime:
     print('风险地区%s更新时间：%s' % (str(item), str(updatetime[item])))
-
+print(citymaps)
 results = []
 
 for item in citymaps:
@@ -39,14 +39,14 @@ for item in citymaps:
                 # print('风险等级:%s,省：%s,具体位置：%s'%(str(area['grade']),str(item2),str(area['city']+area['addr'])))
                 # print(area['city']+area['addr'])
                 results.append(result)
-header = ['风险等级', '省份', '区域']
-header1 = ['更新时间：', updatetime['1']]
-filename = '全国最新风险等级区域' + time.strftime("%Y-%m-%d", time.localtime()) + '.csv'
-print(len(results))
-print(filename)
-with open(filename, 'w', newline='') as f:
-    f_csv = csv.writer(f)
-    f_csv.writerow(header1)
-    f_csv.writerow(header)
-    f_csv.writerows(results)
-
+print(results)
+# header = ['风险等级', '省份', '区域']
+# header1 = ['更新时间：', updatetime['1']]
+# filename = '全国最新风险等级区域' + time.strftime("%Y-%m-%d", time.localtime()) + '.csv'
+# print(len(results))
+# print(filename)
+# with open(filename, 'w', newline='') as f:
+#     f_csv = csv.writer(f)
+#     f_csv.writerow(header1)
+#     f_csv.writerow(header)
+#     f_csv.writerows(results)

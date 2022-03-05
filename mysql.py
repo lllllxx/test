@@ -5,19 +5,13 @@ import pymysql
 class DB:
 
     # 获取连接方法
-    def get_db_conn(self, ls_host, ls_user, ls_password, ls_db, ls_port=38965, ls_charset="utf8"):
-        self.ls_host = ls_host
-        self.ls_user = ls_user
-        self.ls_password = ls_password
-        self.ls_db = ls_db
-        self.ls_port = ls_port
-        self.ls_charset = ls_charset
-        conn = pymysql.connect(host=ls_host,
-                               user=ls_user,
-                               password=ls_password,
-                               db=ls_db,
-                               port=ls_port,
-                               charset=ls_charset)  # 如果查询有中文，需要指定测试集编码
+    def get_db_conn(self):
+        conn = pymysql.connect(host="10.5.254.238",
+                               user="root",
+                               password="Inspur2021@#",
+                               db="bigscreen",
+                               port=38965,
+                               charset="utf8")  # 如果查询有中文，需要指定测试集编码
 
         return conn
 
